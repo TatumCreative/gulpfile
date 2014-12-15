@@ -16,7 +16,7 @@
     "url": "https://github.com/tatumcreative/gulpfile/issues"
   },
   "homepage": "https://github.com/tatumcreative/gulpfile",
-  "devDependencies": {
+  "dependencies": {
     "browserify": "^7.0.1",
     "gulp-consolidate": "^0.1.2",
     "gulp-jshint": "^1.8.4",

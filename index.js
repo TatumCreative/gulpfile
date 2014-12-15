@@ -34,7 +34,7 @@ function _clearConsole() {
 }
 var noClearing = false; //kind of hacky, but whatever
 
-function bundle( enableWatching ) {
+function _bundle( enableWatching ) {
 	
 	var bundler, performBundle;
 	
@@ -99,7 +99,6 @@ gulp.task('watch', function() {
 });
 
 gulp.task('browserify', ['jshint'], function() {
-	_clearConsole()
 	_bundle();
 });
 
@@ -148,6 +147,8 @@ gulp.task('minify', function() {
 gulp.task('jshint', function() {
 
 	var r = react();
+	
+	_clearConsole()
 	
 	return gulp.src( paths.js )
 		.pipe( r )

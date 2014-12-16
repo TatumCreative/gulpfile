@@ -2,6 +2,8 @@
 
 A personal configuration for gulp, using the package.json to declaratively configure.
 
+	npm install git://github.com/TatumCreative/gulpfile.git#v1.0.2 --save-dev
+
 
 	"gulpfilePaths": {
 	  "entry"             : "./js/main.js",

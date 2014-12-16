@@ -1,82 +1,27 @@
-var gulp		= require('gulp'),
-	browserify	= require('browserify'),
-	watchify	= require('watchify'),
-	reactify	= require('reactify'),
-	source		= require('vinyl-source-stream'),
-	minifyify	= require('minifyify'),
-	sourcemaps	= require('gulp-sourcemaps'),
-	uglify		= require('gulp-uglify'),
-	rename		= require('gulp-rename'),
-	gutil		= require('gulp-util'),
-	jshint		= require('gulp-jshint'),
-	react		= require('gulp-react'),
-	sass		= require('gulp-ruby-sass'),
-	replace		= require('gulp-replace'),
-	iconfont	= require('gulp-iconfont'),
-	plumber		= require('gulp-plumber'),
-	consolidate	= require('gulp-consolidate');
+var gulp				= require('gulp'),
+	sourcemaps			= require('gulp-sourcemaps'),
+	uglify				= require('gulp-uglify'),
+	rename				= require('gulp-rename'),
+	gutil				= require('gulp-util'),
+	jshint				= require('gulp-jshint'),
+	react				= require('gulp-react'),
+	sass				= require('gulp-ruby-sass'),
+	replace				= require('gulp-replace'),
+	iconfont			= require('gulp-iconfont'),
+	plumber				= require('gulp-plumber'),
+	consolidate			= require('gulp-consolidate'),
+	runBrowserify		= require('./src/browserifyBundle'),
+	updateVersionPhp	= require('./src/updateVersionPhp'),
+	updateVersionHtml	= require('./src/updateVersionHtml'),
+	clearConsole		= require('./src/clearConsole');
+
+var config = JSON.parse( require('fs').readFileSync( "package.json", 'utf8' ) ).gulpfile;
+var paths = config.paths;
 
 
-var paths = (function() {
-
-	var packageJson = JSON.parse(
-		require('fs').readFileSync( "package.json", 'utf8' )
-	);
-
-	return packageJson.gulpfilePaths;
-	
-})();
-
-function _clearConsole() {
-	if( !noClearing ) {
-		console.log('\033[2J');
-	}
-}
-var noClearing = false; //kind of hacky, but whatever
-
-function bundle( enableWatching ) {
-	
-	var bundler, performBundle;
-	
-	bundler = browserify(paths.entry, {
-		//Source maps
-		debug: true, 
-		
-		//watchify args
-		cache: {},
-		packageCache: {},
-		fullPaths: true
-	});
-	
-	if( enableWatching ) {
-		bundler = watchify( bundler );
-	}
-	
-	performBundle = function() {
-		
-		//gulp.start('jshint');
-		var stream;
-		
-		return bundler
-			.transform(reactify)
-			.on('error', function(err){
-		    	console.log("Browserify transform error", err.message);
-		    	this.end();
-		    })
-			.bundle()
-			.on('error', function(err){
-		    	console.log("Browserify bundle error", err.message);
-		    	this.end();
-		    })
-			.pipe( source( paths.bundleName ))
-			.pipe( gulp.dest( paths.build ));
-		
-	};
-
-	bundler.on('update', performBundle);
-	
-	return performBundle();
-	
+function _updateTheme() {
+	if( config.phpVersionFile ) updateVersionPhp( config.phpVersionFile );
+	if( config.htmlVersionFile ) updateVersionHtml( config.htmlVersionFile );
 }
 
 gulp.task('default', ['watch']);
@@ -86,26 +31,31 @@ gulp.task('watch', function() {
 	gulp.watch( paths.sass, ['sass'] );
 	gulp.watch( paths.js, ['browserify'] );
 	
-	_clearConsole();
-	noClearing = true;
+	clearConsole();
+	clearConsole.pause = true;
 	
 	gulp.start( 'browserify' );
 	gulp.start( 'sass' );
 	
+	
+	//Hack not to clear on inital load
 	setTimeout(function() {
-		noClearing = false;
+		clearConsole.pause = false;
 	}, 2000);
 	
 });
 
 gulp.task('browserify', ['jshint'], function() {
-	_clearConsole()
-	_bundle();
+	
+	clearConsole();
+	runBrowserify( gulp, paths, config.useReact );
+	_updateTheme();
+	
 });
 
 gulp.task('sass', function() {
 	
-	_clearConsole()
+	clearConsole()
 	
 	gulp.src(paths.sassEntry)
 		.pipe(sass({
@@ -115,15 +65,9 @@ gulp.task('sass', function() {
 		.pipe(replace(/\/Library\/WebServer\/cubic-sites\/vail\/fa-content\/themes\/vos\//g, '../../'))
 		.pipe(gulp.dest( paths.css ));
 	
-	// gulp-sass
-	// gulp.src( paths.sassEntry )
-	//     .pipe(sourcemaps.init({includeContent: truef, sourceRoot: '/sass'}))
-	// 		.pipe(sass())
-	// 	.pipe(sourcemaps.write( '.' ))
-	//     .pipe(gulp.dest( paths.css ));
+	_updateTheme();
 	
-	gutil.beep();
-		
+	
 });
 
 gulp.task('build', function() {
@@ -202,3 +146,5 @@ gulp.task('iconfont', function(){
 		})
 		.pipe(gulp.dest( paths.svgBuild ));
 });
+
+module.exports = gulp;

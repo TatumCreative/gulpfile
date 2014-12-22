@@ -53,15 +53,10 @@ gulp.task('watch', function() {
 
 gulp.task('outdated', (function() {
 	
-	var _________________________ = 'echo "------------------------------------------"';
-	
 	return shell.task([
-		_________________________,
-    	'npm outdated --depth=0',
-		_________________________,
-		'cd node_modules/gulpfile; npm outdated --depth=0',
-		_________________________
-    ]);
+		'npm outdated --depth=0;',
+		'cd node_modules/gulpfile; npm outdated --depth=0;'
+	]);
 			
 })() );
 

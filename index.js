@@ -13,7 +13,8 @@ var gulp				= require('gulp'),
 	runBrowserify		= require('./src/browserifyBundle'),
 	updateVersionPhp	= require('./src/updateVersionPhp'),
 	updateVersionHtml	= require('./src/updateVersionHtml'),
-	clearConsole		= require('./src/clearConsole');
+	clearConsole		= require('./src/clearConsole'),
+	shell				= require('gulp-shell');
 
 var config = JSON.parse( require('fs').readFileSync( "package.json", 'utf8' ) ).gulpfile;
 var paths = config.paths;
@@ -28,27 +29,45 @@ gulp.task('default', ['watch']);
 
 gulp.task('watch', function() {
 	
-	gulp.watch( paths.sass, ['sass'] );
-	gulp.watch( paths.js, ['browserify'] );
-	
 	clearConsole();
 	clearConsole.pause = true;
 	
-	gulp.start( 'browserify' );
-	gulp.start( 'sass' );
+	if( paths.sass ) {
+		gulp.watch( paths.sass, ['sass'] );
+		gulp.start( 'sass' );
+	}
 	
+	if( paths.jsWatch ) {
+		gulp.watch( paths.jsWatch, ['browserify'] );
+		gulp.start( 'browserify' );		
+	}
+	
+	gulp.start( 'outdated' );
 	
 	//Hack not to clear on inital load
 	setTimeout(function() {
 		clearConsole.pause = false;
-	}, 2000);
+	}, 1000);
 	
 });
 
+gulp.task('outdated', (function() {
+	
+	var _________________________ = 'echo "------------------------------------------"';
+	
+	return shell.task([
+		_________________________,
+    	'npm outdated --depth=0',
+		_________________________,
+		'cd node_modules/gulpfile; npm outdated --depth=0',
+		_________________________
+    ]);
+			
+})() );
+
 gulp.task('browserify', ['jshint'], function() {
 	
-	clearConsole();
-	runBrowserify( gulp, paths, config.useReact );
+	runBrowserify( gulp, paths, config.transforms );
 	_updateTheme();
 	
 });
@@ -92,6 +111,7 @@ gulp.task('minify', function() {
 gulp.task('jshint', function() {
 
 	var r = react();
+	clearConsole();
 	
 	return gulp.src( paths.js )
 		.pipe( r )

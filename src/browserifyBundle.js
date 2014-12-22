@@ -1,9 +1,10 @@
 var browserify	= require('browserify'),
 	watchify	= require('watchify'),
 	reactify	= require('reactify'),
+	glslify		= require('glslify'),
 	source		= require('vinyl-source-stream');
 	
-module.exports = function bundle( gulp, paths, useReact, enableWatching ) {
+module.exports = function bundle( gulp, paths, transforms, enableWatching ) {
 	
 	var bundler, performBundle;
 	
@@ -25,16 +26,19 @@ module.exports = function bundle( gulp, paths, useReact, enableWatching ) {
 		
 		//gulp.start('jshint');
 		
-		if( useReact ) {
+		if( transforms ) {
+			transforms.forEach( function( transform ) {
 			
-			bundler.transform( reactify )
-				.on('error', function(err){
-			    	console.log("Browserify transform error", err.message);
-			    	this.end();
-			    });
-				
+				bundler.transform( require( transform ) )
+					.on('error', function(err){
+				    	console.log( transform + " transform error", err.message );
+				    	this.end();
+				    })
+				;
+			
+			});
 		}
-		
+				
 		return bundler
 			.bundle()
 			.on('error', function(err){

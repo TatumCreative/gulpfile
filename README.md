@@ -5,10 +5,11 @@ A personal configuration for gulp, using the package.json to declaratively confi
 ##To install:
 	npm install git://github.com/TatumCreative/gulpfile.git#v1.0.2 --save-dev
 
-##package.json gulpfilePaths property
+##package.json gulpfile property
 
 	"gulpfile": {
 	  "phpVersionFile" : "app/version.php",
+	  "transforms" : ["reactify", "glslify"],
 	  "paths": {
 	    "entry": "./js/main.js",
 	    "js": [
@@ -32,3 +33,5 @@ A personal configuration for gulp, using the package.json to declaratively confi
 	    "svgTemplates": "./assets/svg/templates/"
 	  },
 	},
+	
+Note that transforms must be installed at the project level.

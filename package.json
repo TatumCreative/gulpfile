@@ -1,6 +1,6 @@
 {
   "name": "gulpfile",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A personal gulpfile configuration that reads the package.json for a gulpfilePaths property",
   "main": "index.js",
   "scripts": {
@@ -10,29 +10,41 @@
     "type": "git",
     "url": "https://github.com/tatumcreative/gulpfile"
   },
-  "author": "Greg Tatum",
+  "author": {
+    "name": "Greg Tatum"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/tatumcreative/gulpfile/issues"
   },
   "homepage": "https://github.com/tatumcreative/gulpfile",
-  "devDependencies": {
+  "dependencies": {
     "browserify": "^7.0.1",
+    "glslify": "^1.6.0",
     "gulp-consolidate": "^0.1.2",
+    "gulp-iconfont": "^1.0.0",
     "gulp-jshint": "^1.8.4",
     "gulp-plumber": "^0.6.6",
-    "gulp-react": "^1.0.0",
+    "gulp-react": "^2.0.0",
     "gulp-rename": "^1.2.0",
-    "gulp-replace": "^0.4.0",
+    "gulp-replace": "^0.5.0",
     "gulp-ruby-sass": "^0.7.1",
-    "gulp-sass": "^0.7.3",
+    "gulp-sass": "^1.2.4",
+    "gulp-shell": "^0.2.11",
     "gulp-sourcemaps": "^1.1.1",
-    "gulp-uglify": "^0.3.1",
+    "gulp-uglify": "^1.0.2",
     "gulp-util": "^3.0.0",
+    "jshint-stylish": "^1.0.0",
     "lodash": "^2.4.1",
     "minifyify": "^4.0.4",
-    "reactify": "^0.14.0",
-    "vinyl-source-stream": "^0.1.1",
+    "reactify": "^0.17.1",
+    "vinyl-source-stream": "^1.0.0",
     "watchify": "^2.2.1"
-  }
+  },
+  "readme": "#gulpfile\n\nA personal configuration for gulp, using the package.json to declaratively configure.\n\n##To install:\n\tnpm install git://github.com/TatumCreative/gulpfile.git#v1.0.2 --save-dev\n\n##package.json gulpfilePaths property\n\n\t\"gulpfile\": {\n\t  \"phpVersionFile\" : \"app/version.php\",\n\t  \"paths\": {\n\t    \"entry\": \"./js/main.js\",\n\t    \"js\": [\n\t      \"js/**/*.js\",\n\t      \"js/**/*.jsx\",\n\t      \"gulpfile.js\"\n\t    ],\n\t    \"hint\": [\n\t      \"assets/build/bundle.js\",\n\t      \"gulpfile.js\"\n\t    ],\n\t    \"build\": \"./assets/build/\",\n\t    \"bundleName\": \"bundle.js\",\n\t    \"minName\": \"bundle.min.js\",\n\t    \"mapName\": \"bundle.min.map\",\n\t    \"sass\": \"sass/**/*.scss\",\n\t    \"sassEntry\": \"sass/main.scss\",\n\t    \"css\": \"./assets/build\",\n\t    \"svg\": \"./assets/svg/*.svg\",\n\t    \"svgBuild\": \"./assets/fonts/icons\",\n\t    \"svgTemplates\": \"./assets/svg/templates/\"\n\t  },\n\t},",
+  "readmeFilename": "README.md",
+  "_id": "gulpfile@1.0.0",
+  "_shasum": "ac5b74321063b62fa69929835115e8cd4f52b089",
+  "_resolved": "git://github.com/TatumCreative/gulpfile.git#a8d4af89ca36613fbcb3900e294e8ecd84d9801f",
+  "_from": "gulpfile@git://github.com/TatumCreative/gulpfile.git#v1.1.0"
 }

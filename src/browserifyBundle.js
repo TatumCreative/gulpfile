@@ -1,7 +1,5 @@
 var browserify	= require('browserify'),
 	watchify	= require('watchify'),
-	reactify	= require('reactify'),
-	glslify		= require('glslify'),
 	source		= require('vinyl-source-stream');
 	
 module.exports = function bundle( gulp, paths, transforms, enableWatching ) {

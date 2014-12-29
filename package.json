@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/tatumcreative/gulpfile",
   "dependencies": {
-    "browserify": "^7.0.1",
+    "browserify": "^8.0.2",
     "gulp-consolidate": "^0.1.2",
     "gulp-iconfont": "^1.0.0",
     "gulp-jshint": "^1.8.4",

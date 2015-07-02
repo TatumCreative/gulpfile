@@ -1,6 +1,6 @@
 {
   "name": "gulpfile",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A personal gulpfile configuration that reads the package.json for a gulpfilePaths property",
   "main": "index.js",
   "scripts": {

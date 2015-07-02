@@ -42,12 +42,10 @@ gulp.task('watch', function() {
 		gulp.start( 'browserify' );		
 	}
 	
-	gulp.start( 'outdated' );
-	
-	//Hack not to clear on inital load
+	//Hack not to clear on initial load
 	setTimeout(function() {
 		clearConsole.pause = false;
-	}, 1000);
+	}, 3000);
 	
 });
 
